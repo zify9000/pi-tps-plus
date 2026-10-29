@@ -1,0 +1,36 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Tag must match package.json version
+        run: |
+          want="v$(node -p 'require("./package.json").version')"
+          if [ "$GITHUB_REF_NAME" != "$want" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match package version $want"
+            exit 1
+          fi
+
+      - name: Publish (trusted publishing, no token)
+        run: npm publish --provenance

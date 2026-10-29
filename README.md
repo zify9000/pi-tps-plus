@@ -176,6 +176,18 @@ then common global roots); override with `PI_ROOT=/path/to/@earendil-works/pi-co
 The dev scripts live in the repo on purpose: files inside pi's extension directories are loaded as
 extensions, so nothing executable may ship next to `extensions/pi-tps-plus.ts` at runtime.
 
+## Publishing
+
+Releases go to npm via GitHub Actions trusted publishing (OIDC — no long-lived npm token on any
+machine):
+
+1. Bump `version` in `package.json`, commit.
+2. `git tag v<version> && git push origin v<version>`
+3. The workflow verifies the tag matches the version, then runs `npm publish --provenance`.
+
+Trusted publishing is bound on the npm package side: package settings → Publishing →
+Trusted publisher → repo `zify9000/pi-tps-plus`, workflow `.github/workflows/publish.yml`.
+
 ## License
 
 MIT — see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
