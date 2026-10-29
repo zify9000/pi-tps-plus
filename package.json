@@ -7,6 +7,13 @@
   "engines": {
     "node": ">=20"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zify9000/pi-tps-plus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zify9000/pi-tps-plus/issues"
+  },
   "keywords": [
     "pi-package",
     "pi",
